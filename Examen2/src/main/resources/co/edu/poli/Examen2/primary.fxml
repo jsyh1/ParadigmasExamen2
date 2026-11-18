@@ -19,7 +19,7 @@
       style="-fx-background-color: #f4f6f9; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 4);"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="co.edu.poli.Examen2.controlador.PrimaryController">
+      fx:controller="co.edu.poli.Examen2.adaptadores.entrada.javafx.PrimaryController">
 
    <padding>
       <Insets bottom="28.0" left="30.0" right="30.0" top="28.0" />
@@ -119,37 +119,47 @@
 
    <Separator />
 
-   <!-- Fila 1: Guardar y Limpiar -->
-   <HBox spacing="12.0" alignment="CENTER">
-      <Button fx:id="btnGuardar"
-              text="💾  Guardar"
-              prefWidth="150.0" prefHeight="34.0"
+   <VBox spacing="8.0" alignment="CENTER">
+      <HBox spacing="10.0" alignment="CENTER">
+         <Button fx:id="btnGuardar"
+              text="Guardar"
+              prefWidth="205.0" prefHeight="34.0"
               onAction="#handleGuardar"
               style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;">
          <font><Font size="13.0" /></font>
-      </Button>
-      <Button fx:id="btnListar"
-              text="📋  Listar"
-              prefWidth="150.0" prefHeight="34.0"
+         </Button>
+         <Button fx:id="btnListar"
+              text="Listar"
+              prefWidth="205.0" prefHeight="34.0"
               onAction="#handleListar"
               style="-fx-background-color: #d35400; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;">
          <font><Font size="13.0" /></font>
-      </Button>
-      <Button fx:id="btnSerializar"
-              text="📦  Serializar"
-              prefWidth="150.0" prefHeight="34.0"
+         </Button>
+      </HBox>
+      <HBox spacing="10.0" alignment="CENTER">
+         <Button fx:id="btnSerializar"
+              text="Serializar"
+              prefWidth="205.0" prefHeight="34.0"
               onAction="#handleSerializar"
               style="-fx-background-color: #8e44ad; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;">
          <font><Font size="13.0" /></font>
-      </Button>
-      <Button fx:id="btnDeserializar"
-              text="📂  Deserializar"
-              prefWidth="150.0" prefHeight="34.0"
+         </Button>
+         <Button fx:id="btnDeserializar"
+              text="Deserializar"
+              prefWidth="205.0" prefHeight="34.0"
               onAction="#handleDeserializar"
               style="-fx-background-color: #16a085; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;">
          <font><Font size="13.0" /></font>
+         </Button>
+      </HBox>
+      <Button fx:id="btnLimpiar"
+              text="Limpiar campos"
+              prefWidth="205.0" prefHeight="34.0"
+              onAction="#handleLimpiar"
+              style="-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;">
+         <font><Font size="13.0" /></font>
       </Button>
-   </HBox>
+   </VBox>
 
    <Separator />
 

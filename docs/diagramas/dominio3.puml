@@ -1,0 +1,125 @@
+@startuml
+title Diagrama de clases UML - Dominio y aplicacion
+
+!pragma layout smetana
+left to right direction
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam shadowing false
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #39739D
+  ArrowColor #46627F
+}
+skinparam stereotype {
+  CBackgroundColor #FFF7E6
+  CBorderColor #D69E2E
+}
+
+package "Aplicacion" {
+  interface ExamenUseCase {
+    +registrar(comando: CrearExamenCommand): ExamenSangre
+    +listar(): List<ExamenSangre>
+    +serializar(): Path
+    +deserializar(): List<ExamenSangre>
+  }
+
+  class ExamenService {
+    -catalogo: ExamenCatalogoPort
+    -archivo: ArchivoExamenPort
+    -fabrica: ExamenFactory
+    -publicador: PublicadorExamenes
+    +registrar(comando): ExamenSangre
+    +listar(): List<ExamenSangre>
+    +serializar(): Path
+    +deserializar(): List<ExamenSangre>
+  }
+
+  class CrearExamenCommand {
+    -codigo: String
+    -nombrePaciente: String
+    -costo: String
+    -tipoSangre: String
+    -factorRh: FactorRh
+  }
+
+  class PublicadorExamenes <<Observer Subject>> {
+    -observadores: List<ExamenObserver>
+    +suscribir(observador: ExamenObserver): void
+    +publicar(examenes: List<ExamenSangre>, mensaje: String): void
+  }
+
+  interface ExamenObserver <<Observer>> {
+    +alActualizar(examenes: List<ExamenSangre>, mensaje: String): void
+  }
+}
+
+package "Dominio" {
+  class ExamenSangre <<Entity>> {
+    -codigo: String
+    -nombrePaciente: String
+    -costo: BigDecimal
+    -tipoSangre: TipoSangre
+    -factorRh: FactorRh
+    +getCodigo(): String
+    +getNombrePaciente(): String
+    +getCosto(): BigDecimal
+    +getTipoSangre(): TipoSangre
+    +getFactorRh(): FactorRh
+  }
+
+  enum TipoSangre {
+    A
+    B
+    AB
+    O
+  }
+
+  enum FactorRh {
+    POSITIVO
+    NEGATIVO
+  }
+
+  interface ExamenFactory <<Factory Method>> {
+    +crear(codigo: String, paciente: String, costo: String, tipo: String, factor: FactorRh): ExamenSangre
+  }
+
+  class FabricaExamenSangre <<Concrete Factory>> {
+    +crear(codigo: String, paciente: String, costo: String, tipo: String, factor: FactorRh): ExamenSangre
+  }
+}
+
+package "Puertos de salida" {
+  interface ExamenCatalogoPort {
+    +obtenerTodos(): List<ExamenSangre>
+    +guardar(examen: ExamenSangre): void
+    +reemplazarTodos(examenes: List<ExamenSangre>): void
+  }
+
+  interface ArchivoExamenPort {
+    +guardar(examenes: List<ExamenSangre>): Path
+    +cargar(): List<ExamenSangre>
+  }
+}
+
+ExamenService ..|> ExamenUseCase
+ExamenService --> ExamenCatalogoPort
+ExamenService --> ArchivoExamenPort
+ExamenService --> ExamenFactory
+ExamenService --> PublicadorExamenes : publica cambios
+ExamenUseCase ..> CrearExamenCommand
+
+FabricaExamenSangre ..|> ExamenFactory
+FabricaExamenSangre ..> ExamenSangre : construye
+ExamenSangre --> TipoSangre
+ExamenSangre --> FactorRh
+PublicadorExamenes o--> ExamenObserver : notifica
+
+legend bottom
+  |= Patron GoF |= Clases del nucleo |
+  | Creacional - Factory Method | ExamenFactory, FabricaExamenSangre |
+  | Comportamiento - Observer | PublicadorExamenes, ExamenObserver |
+  | Estructural - Adapter | Los adaptadores concretos se excluyen de este diagrama |
+endlegend
+@enduml
